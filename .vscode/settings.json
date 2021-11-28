@@ -1,0 +1,20 @@
+{
+  "cSpell.ignoreWords": [
+    "catch"
+  ],
+  "cSpell.words": [
+    "attrdeleter",
+    "funcs",
+    "lsdir",
+    "rmdirs"
+  ],
+
+  "[python]": {
+    "outline.showConstants": true,
+    "outline.showFields": true,
+    "outline.showVariables": true,
+  },
+
+  "python.analysis.typeCheckingMode": null,
+  "python.formatting.provider": "none",  // CAUTION
+}
