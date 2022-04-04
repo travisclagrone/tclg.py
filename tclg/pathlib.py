@@ -1,4 +1,4 @@
-# TODO LATER consider renaming `tclg.pathlib` to `tclg.fsutil` and import it as `fs`
+# TODO consider renaming `tclg.pathlib` to `tclg.fsutil` and import it as `fs`
 import os
 import shutil as sh
 
@@ -9,27 +9,28 @@ from typing import Optional, Union
 
 
 __all__ = []
+__dir__ = lambda: __all__
 
-def export(named):
-    assert named.__name__ is not None
-    __all__.append(named.__name__)
-    return named
+def _export(definition):
+    assert definition.__name__ is not None
+    __all__.append(definition.__name__)
+    return definition
 
 
 # region Directories
 
-cwd = export(Path.cwd)
-home = export(Path.home)
+cwd = _export(Path.cwd)
+home = _export(Path.home)
 
 
-@export
+@_export
 def chdir(path: Union[PathLike, str] = None, /) -> Path:
     path = Path.home() if path is None else Path(path)
     os.chdir(path)
     return path.resolve()
 
 
-@export
+@_export
 def lsdir(path: Union[PathLike, str] = None, /) -> list[Path]:
     path = Path() if path is None else Path(path)
     return list(path.iterdir())
@@ -39,7 +40,7 @@ def lsdir(path: Union[PathLike, str] = None, /) -> list[Path]:
 # (recursive)
 
 
-@export
+@_export
 def mkdir(
     path: Union[PathLike, str],
     /,
@@ -73,7 +74,7 @@ def mkdir(
 # (like mkdirs + rmdirs)
 
 
-@export
+@_export
 def rmdir(path: Union[PathLike, str], /) -> Optional[Path]:
     path = Path(path)
     if path.exists():
@@ -81,7 +82,7 @@ def rmdir(path: Union[PathLike, str], /) -> Optional[Path]:
         return path
 
 
-@export
+@_export
 def rmdirs(path: Union[PathLike, str], /) -> list[Path]:
     removed = []
     path = Path(path)
@@ -134,7 +135,7 @@ def rmdirs(path: Union[PathLike, str], /) -> list[Path]:
 # (equivalent to `Path.rename`, but with a flag param to be `Path.replace`)
 
 
-@export
+@_export
 def rm(path: Union[PathLike, str], /, missing_ok: bool = True) -> None:
     path = Path(path)
     path.unlink(missing_ok=missing_ok)
@@ -167,13 +168,13 @@ def rm(path: Union[PathLike, str], /, missing_ok: bool = True) -> None:
 
 # region Globs
 
-@export
+@_export
 def glob(pattern: str, /, root_dir: Union[PathLike, str] = None) -> list[Path]:
     root_dir = Path() if root_dir is None else Path(root_dir)
     return list(root_dir.glob(pattern))
 
 
-@export
+@_export
 def rglob(pattern: str, /, root_dir: Union[PathLike, str] = None) -> Iterator[Path]:
     root_dir = Path() if root_dir is None else Path(root_dir)
     return root_dir.rglob(pattern)

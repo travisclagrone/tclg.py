@@ -8,6 +8,16 @@ from tclg.typing import (
 )
 
 
+__all__ = []
+__dir__ = lambda: __all__
+
+def _export(definition):
+    assert definition.__name__ is not None
+    __all__.append(definition.__name__)
+    return definition
+
+
+@_export
 class attrdeleter:
     """Return a callable object that deletes the named attribute of its operand.
 
@@ -25,6 +35,7 @@ class attrdeleter:
         delattr(obj, self._name)
 
 
+@_export
 class attrsetter:
     """Return a callable object that sets the named attribute of its operand to the given value.
 
@@ -44,6 +55,7 @@ class attrsetter:
         setattr(obj, self._name, self._value)
 
 
+@_export
 class itemdeleter:
     """Return a callable object that deletes the keyed item of its operand.
 
@@ -61,6 +73,7 @@ class itemdeleter:
         del obj[self._key]
 
 
+@_export
 class itemsetter:
     """Return a callable object that sets the keyed item to the given value from its operand.
 

@@ -2,6 +2,16 @@ from collections.abc import Sequence
 from typing import NoReturn, Optional
 
 
+__all__ = []
+__dir__ = lambda: __all__
+
+def _export(definition):
+    assert definition.__name__ is not None
+    __all__.append(definition.__name__)
+    return definition
+
+
+@_export
 class exitable:
     """Context manager that provides a method to unexceptionally exit the block early.
 
@@ -64,6 +74,7 @@ class exitable:
         raise self.__exit_exc from None
 
 
+@_export
 class catch:
     """Context manager to catch (suppress and save) zero or more exceptions types.
 

@@ -5,8 +5,8 @@ from typing import Any, Generic, Optional, TypeVar
 __all__ = []
 __dir__ = lambda: __all__
 
-
-def export(definition):
+def _export(definition):
+    assert definition.__name__ is not None
     __all__.append(definition.__name__)
     return definition
 
@@ -23,7 +23,7 @@ def is_public(name: str) -> bool:
 V = TypeVar("V")
 
 
-@export
+@_export
 class AttrsItemsView(Generic[V]):
     """View of a collection of items (i.e. a `Mapping`) as an `object` of attributes."""
 
@@ -47,7 +47,7 @@ class AttrsItemsView(Generic[V]):
     __delattr__ = None
 
 
-@export
+@_export
 class MutableAttrsItemsView(AttrsItemsView):
     """View of a mutable collection of items (i.e. a `MutableMapping`) as an `object` of attributes."""
 
@@ -73,7 +73,7 @@ class MutableAttrsItemsView(AttrsItemsView):
             raise attr_error(name, self) from exc
 
 
-@export
+@_export
 class ItemsAttrsView(Mapping[str, Optional[Any]]):
     """View of a structure of attributes (i.e. an `object`) as a `Mapping` of items."""
 
@@ -97,7 +97,7 @@ class ItemsAttrsView(Mapping[str, Optional[Any]]):
         return sum(map(is_public, dir(self._obj)))
 
 
-@export
+@_export
 class MutableItemsAttrsView(ItemsAttrsView):
     """View of a mutable structure of attributes (i.e. an `object`) as a `MutableMapping` of items."""
 
@@ -123,6 +123,3 @@ class MutableItemsAttrsView(ItemsAttrsView):
             delattr(self._obj, key)
         except AttributeError as exc:
             raise KeyError(key) from exc
-
-
-__all__ = tuple(__all__)

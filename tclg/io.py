@@ -5,16 +5,24 @@ from pathlib import Path
 from typing import Union, overload
 
 
+__all__ = []
+__dir__ = lambda: __all__
+
+def _export(definition):
+    assert definition.__name__ is not None
+    __all__.append(definition.__name__)
+    return definition
+
+
 @overload
 def read(file: Union[BufferedIOBase, RawIOBase], /) -> bytes:
     ...
-
 
 @overload
 def read(file: Union[TextIOBase, PathLike, str], /) -> str:
     ...
 
-
+@_export
 def read(file, /):
     match file:
         case RawIOBase():
@@ -33,22 +41,19 @@ def read(file, /):
 def write(file: Union[BufferedIOBase, RawIOBase], value: bytes, /, *, flush: bool=True, close: bool=False) -> int:
     ...
 
-
 @overload
 def write(file: Union[PathLike, str], value: bytes, /) -> int:
     ...
-
 
 @overload
 def write(file: TextIOBase, value: str, /, *, flush: bool=True, close: bool=False) -> int:
     ...
 
-
 @overload
 def write(file: Union[PathLike, str], value: str, /) -> int:
     ...
 
-
+@_export
 def write(file, value, /, *, flush=True, close=False):
     if isinstance(file, IOBase):
         try:
@@ -75,22 +80,19 @@ def write(file, value, /, *, flush=True, close=False):
 def append(file: Union[BufferedIOBase, RawIOBase], value: bytes, /, *, flush: bool=True, close: bool=False) -> int:
     ...
 
-
 @overload
 def append(file: Union[PathLike, str], value: bytes, /) -> int:
     ...
-
 
 @overload
 def append(file: TextIOBase, value: str, /, *, flush: bool=True, close: bool=False) -> int:
     ...
 
-
 @overload
 def append(file: Union[PathLike, str], value: str, /) -> int:
     ...
 
-
+@_export
 def append(file, value, /, *, flush=True, close=False):
     if isinstance(file, IOBase):
         try:
@@ -117,12 +119,11 @@ def append(file, value, /, *, flush=True, close=False):
 def readlines(file: Union[BufferedIOBase, RawIOBase], /) -> list[bytes]:
     ...
 
-
 @overload
 def readlines(file: Union[TextIOBase, PathLike, str], /) -> list[str]:
     ...
 
-
+@_export
 def readlines(file, /):
     if isinstance(file, IOBase):
         return file.readlines()
@@ -135,22 +136,19 @@ def readlines(file, /):
 def writelines(file: Union[BufferedIOBase, RawIOBase], lines: Iterable[bytes], /, *, flush: bool=True, close: bool=False) -> None:
     ...
 
-
 @overload
 def writelines(file: Union[PathLike, str], lines: Iterable[bytes], /) -> None:
     ...
-
 
 @overload
 def writelines(file: TextIOBase, lines: Iterable[str], /, *, flush: bool=True, close: bool=False) -> None:
     ...
 
-
 @overload
 def writelines(file: Union[PathLike, str], lines: Iterable[str], /) -> None:
     ...
 
-
+@_export
 def writelines(file, lines, /, *, flush=True, close=False):
     if isinstance(file, IOBase):
         try:
@@ -170,22 +168,19 @@ def writelines(file, lines, /, *, flush=True, close=False):
 def appendlines(file: Union[BufferedIOBase, RawIOBase], lines: Iterable[bytes], /, *, flush: bool=True, close: bool=False) -> None:
     ...
 
-
 @overload
 def appendlines(file: Union[PathLike, str], lines: Iterable[bytes], /) -> None:
     ...
-
 
 @overload
 def appendlines(file: TextIOBase, lines: Iterable[str], /, *, flush: bool=True, close: bool=False) -> None:
     ...
 
-
 @overload
 def appendlines(file: Union[PathLike, str], lines: Iterable[str], /) -> None:
     ...
 
-
+@_export
 def appendlines(file, lines, /, *, flush=True, close=False):
     if isinstance(file, IOBase):
         try:
